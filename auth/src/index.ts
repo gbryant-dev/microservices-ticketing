@@ -1,11 +1,20 @@
 import express from 'express';
+import { currentUserRouter } from './routes/current-user';
+import { signInRouter } from './routes/signin';
+import { signOutRouter } from './routes/signout';
+import { signUpRouter } from './routes/signup';
 
 const app = express();
 
 app.use(express.json());
+app.use(currentUserRouter);
+app.use(signInRouter);
+app.use(signOutRouter);
+app.use(signUpRouter);
+
 
 const port = 3000;
 
 app.listen(3000, () => {
-    console.log(`Listening on port ${port}`)
+    console.log(`Listening on port ${port}!`);
 });
