@@ -2,8 +2,7 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
-import { validateRequest } from '../middleware/validate-request';
-import { BadRequestError } from '../errors/bad-request-error';
+import { validateRequest, BadRequestError } from '@gbtickets/common';
 
 import { User } from '../models/user';
 
