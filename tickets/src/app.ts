@@ -3,12 +3,9 @@ import 'express-async-errors';
 
 import cookieSession from 'cookie-session';
 
-import { currentUserRouter } from './routes/current-user';
-import { signInRouter } from './routes/signin';
-import { signOutRouter } from './routes/signout';
-import { signUpRouter } from './routes/signup';
-
-import { errorHandler, NotFoundError } from '@gbtickets/common';
+import { errorHandler, NotFoundError, currentUser } from '@gbtickets/common';
+import { createTicketRouter } from './routes/new';
+import { showTicketRouter } from './routes/show';
 
 
 const app = express();
@@ -23,10 +20,10 @@ app.use(
   })
 )
 
-app.use(currentUserRouter);
-app.use(signInRouter);
-app.use(signOutRouter);
-app.use(signUpRouter);
+app.use(currentUser);
+
+app.use(createTicketRouter);
+app.use(showTicketRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
