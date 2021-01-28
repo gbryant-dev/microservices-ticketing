@@ -1,6 +1,7 @@
 
 import { app } from './app';
 import mongoose from 'mongoose';
+import { natsWrapper } from './nats-wrapper';
 
 const start = async () => {
 
@@ -13,6 +14,17 @@ const start = async () => {
   }
   
   try {
+    await natsWrapper.connect('ticketing', 'djflsd', 'http://nats-srv:4222');
+
+    natsWrapper.client.on('close', () => {
+      console.log('NATS connection closed!');
+      process.exit();
+    });
+
+    process.on('SIGTERM', () => natsWrapper.client.close());
+    process.on('SIGINT', () => natsWrapper.client.close());
+
+
     await mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -27,7 +39,7 @@ const start = async () => {
 const port = 3000;
 
 app.listen(3000, () => {
-    console.log(`Listening on port ${port}!!!`);
+    console.log(`Listening on port ${port}!`);
 });
 
 start();
