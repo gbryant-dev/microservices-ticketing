@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from 'mongoose';
+import mongoose from 'mongoose';
 import { OrderStatus } from '@gbtickets/common';
 import { TicketDoc } from './ticket';
 
