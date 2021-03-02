@@ -11,11 +11,12 @@ export default ({ url, method, body, onSuccess }) => {
       const response = await axios.request({ method: method, url: url, data: body });
 
       if (onSuccess) {
-        onSuccess(response.data)
+        onSuccess(response.data);
       }
 
       return response.data;
     } catch (err) {
+      
       setErrors(
       <div className="alert alert-danger">
         <h4>Ooops...</h4>
