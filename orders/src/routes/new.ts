@@ -40,8 +40,8 @@ async (req: Request, res: Response) => {
   }
 
   // Calculate an expiration date for this order
-  const expiration = new Date(new Date().toLocaleString('GMT'));
-
+  const expiration = new Date();
+  console.log(expiration);
   expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS);
 
   // Build the order and save to database 

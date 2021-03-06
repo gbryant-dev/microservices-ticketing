@@ -5,10 +5,13 @@ export default ({ url, method, body, onSuccess }) => {
   const [errors, setErrors] = useState(null);
 
 
-  const doRequest = async () => {
+  const doRequest = async (props = {}) => {
     try {
       setErrors(null);
-      const response = await axios.request({ method: method, url: url, data: body });
+      const response = await axios.request({ method: method, url: url, data: {
+        ...body,
+        ...props
+      } });
 
       if (onSuccess) {
         onSuccess(response.data);

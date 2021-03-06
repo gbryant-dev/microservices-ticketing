@@ -1,7 +1,18 @@
 import { useState, useEffect } from 'react';
+import StripeCheckout from 'react-stripe-checkout';
+import useRequest from '../../hooks/useRequest';
 
-const OrderShow = ({ order }) => {
+const OrderShow = ({ order, currentUser }) => {
   const [expiresIn, setExpiresIn] = useState(0);
+
+  const { doRequest, errors } = useRequest({
+    url: '/api/payments',
+    method: 'post',
+    body: {
+      orderId: order.id
+    },
+    onSuccess: (payment) => console.log(payment)
+  })
 
   useEffect(() => {
     const calculateExpiry = () => {
@@ -17,12 +28,21 @@ const OrderShow = ({ order }) => {
     }
   }, []);
 
-  if (expiresIn < 0) {
-    return <div>Order has expired</div>
-  }
+  // if (expiresIn < 0) {
+  //   return <div>Order has expired</div>
+  // }
 
   return (
-    <div>Time left to pay: {expiresIn}</div>
+    <div>
+      Time left to pay: {expiresIn}
+      <StripeCheckout
+        token={({ id }) => doRequest({ token: id })}
+        stripeKey={process.env.NEXT_PUBLIC_STRIPE_KEY}
+        amount={order.ticket.price * 100}
+        email={currentUser.email}
+      />
+      {errors}
+    </div>
   );
 }
 
